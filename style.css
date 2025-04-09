@@ -1,0 +1,84 @@
+body {
+  background: #f0f0f0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #153677, #4e085f);
+}
+
+.todo-app {
+  background: #fff;
+  width: 380px;
+  margin: 60px auto;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+}
+
+button {
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+ul {
+  margin-top: 20px;
+  padding-left: 0;
+  list-style: none;
+}
+
+li {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  position: relative;
+}
+li:hover {
+  cursor: pointer;
+}
+li.done span {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 40px;
+  position: absolute;
+  right: 0px;
+}
+.delete-btn:hover {
+  color: red;
+}
+.edit {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 40px;
+  position: absolute;
+  right: 40px;
+}
+.edit:hover {
+  color: red;
+}

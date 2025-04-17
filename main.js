@@ -4,33 +4,52 @@ const listTask = document.getElementById("todo-list");
 
 let tasks = [];
 
-// Thêm task mới
-function addTask(text) {
-  const task = {
-    id: Date.now(),
+// Thêm task mới (POST)
+async function addTask(text) {
+  const newTask = {
     text: text,
     done: false,
   };
-  tasks.push(task);
-  saveData();
+  const res = await fetch("http://localhost:3000/tasks", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newTask),
+  });
+  const savedTask = await res.json();
+  tasks.push(savedTask);
   renderTasks();
 }
 
-// Lưu tasks vào localStorage
-function saveData() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+// Xoá task (DELETE)
+async function deleteTask(id) {
+  await fetch(`http://localhost:3000/tasks/${id}`, {
+    method: "DELETE",
+  });
+  tasks = tasks.filter(t => t.id !== id);
+  renderTasks();
 }
 
-// Tải tasks từ localStorage
-function loadData() {
-  const data = localStorage.getItem("tasks");
-  if (data) {
-    tasks = JSON.parse(data);
-    renderTasks();
-  }
+// Cập nhật task (PUT)
+async function updateTask(task) {
+  await fetch(`http://localhost:3000/tasks/${task.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(task),
+  });
 }
 
-// Render tasks ra giao diện
+// Lấy tasks (GET)
+async function loadData() {
+  const res = await fetch("http://localhost:3000/tasks");
+  tasks = await res.json();
+  renderTasks();
+}
+
+// Render danh sách tasks
 function renderTasks() {
   listTask.innerHTML = "";
 
@@ -61,7 +80,7 @@ function renderTasks() {
       const newText = prompt("Sửa công việc:", task.text);
       if (newText && newText.trim() !== "") {
         task.text = newText.trim();
-        saveData();
+        updateTask(task);
         renderTasks();
       }
     });
@@ -77,15 +96,13 @@ function renderTasks() {
     deleteBtn.classList.add("delete-btn");
     deleteBtn.addEventListener("click", function (e) {
       e.stopPropagation();
-      tasks = tasks.filter(t => t.id !== task.id);
-      saveData();
-      renderTasks();
+      deleteTask(task.id);
     });
 
-    // Gạch công việc khi click
+    // Gạch task
     li.addEventListener("click", function () {
       task.done = !task.done;
-      saveData();
+      updateTask(task);
       renderTasks();
     });
 
@@ -107,4 +124,4 @@ btn.addEventListener("click", function () {
   }
 });
 
-loadData(); // Tải dữ liệu khi mở trang
+loadData();

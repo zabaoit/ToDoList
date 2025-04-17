@@ -39,6 +39,7 @@ async function updateTask(task) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(task),
+    z,
   });
 }
 
